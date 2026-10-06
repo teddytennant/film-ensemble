@@ -1,0 +1,10 @@
+[project]
+name = "film-ensemble"
+version = "0.1.0"
+description = "FiLM ensemble conditioning for the 3D corrector in arXiv 2609.30746"
+requires-python = ">=3.10"
+dependencies = ["jax", "optax"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
