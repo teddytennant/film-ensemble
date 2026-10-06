@@ -5,7 +5,7 @@ From the repository root:
     JAX_PLATFORMS=cpu python -m pytest -q
     JAX_PLATFORMS=cpu python demo.py
 
-This is the low-dimensional system only. No quasi-geostrophic run, no STORN, no claim about 99th-percentile exceedance on the paper's trajectories. Widths are smaller than Table 5 (d_hid 16 not 32, context hidden 8 not 48, one layer not two). The tail loss is an exceedance weight, not a copied hyperparameter. OTD modes are not computed; the ensemble leading eigenvector is the conditioning signal the paper uses as a Jacobian-free proxy.
+This is the low-dimensional system only. An H200 smoke (job 755077) was cancelled while still pending; it did not run. No quasi-geostrophic run, no STORN, no claim about 99th-percentile exceedance on the paper's trajectories. Widths are smaller than Table 5 (d_hid 16 not 32, context hidden 8 not 48, one layer not two). The tail loss is an exceedance weight, not a copied hyperparameter. OTD modes are not computed; the ensemble leading eigenvector is the conditioning signal the paper uses as a Jacobian-free proxy.
 
 The context network maps the length-8 vector (member mean, member std, two leading covariance eigenvalues) through a tanh hidden layer of width 8, then to gamma and beta in R^16. Hidden width 8 is used instead of the paper's 48 because the backbone is tiny. The backbone projects each coarse state in a length-8 window to d_hid 16, adds sinusoidal positions, and runs one pre-norm transformer block (LayerNorm, 2-head attention, GELU FFN of width 32). FiLM is h_film = (1 + gamma) * h + beta on that encoder output. Heads emit a pre-gate correction delta and a gate g; the gate bias is initialized to -2. The corrected window is z_coarse + g * delta. context=None skips FiLM, which is gamma = 0, beta = 0.
 
